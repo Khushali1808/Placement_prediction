@@ -2,37 +2,36 @@ from flask import Flask, request, jsonify
 import pickle
 
 app = Flask(__name__)
-
-# Load model safely
-with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
+model = pickle.load(open('model.pkl', 'rb'))
 
 @app.route('/')
 def home():
-    return "Placement Prediction API is Running!"
+    return "Placement Prediction API Running"
+
+@app.route('/contact')
+def contact():
+    return "This is my Contact page!!!!"
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        data = request.get_json()
+    data = request.json
+    features = [[
+        data['cgpa'],
+        data['aptitude'],
+        data['communication'],
+        data['projects']
+    ]]
+    
+    prediction = model.predict(features)[0]
+    
+    return jsonify({
+        "prediction": int(prediction)
+    })
 
-        features = [[
-            data.get('cgpa', 0),
-            data.get('aptitude', 0),
-            data.get('communication', 0),
-            data.get('projects', 0)
-        ]]
+import os
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
-        prediction = model.predict(features)[0]
 
-        return jsonify({
-            "prediction": int(prediction)
-        })
-
-    except Exception as e:
-        return jsonify({
-            "error": str(e)
-        })
-
-if __name__ == "__main__":
-    app.run(debug=True)
+# run => python file.ext => python app.py
