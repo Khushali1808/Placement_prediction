@@ -2,7 +2,7 @@ Placement Prediction App
 
 A simple web application to predict whether a student is likely to get placed based on CGPA, aptitude score, communication skills, and project experience.
 
-Built with Flask (backend) and Streamlit (frontend) using a Logistic Regression model.
+Built with Flask (backend: ) and Streamlit (frontend: ) using a Logistic Regression model.
 
 Features
 Predict placement chances with a few inputs.
